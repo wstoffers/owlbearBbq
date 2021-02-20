@@ -1,0 +1,34 @@
+{
+    "reference_time": 1613806542,
+    "sunset_time": 1613866997,
+    "sunrise_time": 1613826377,
+    "clouds": 1,
+    "rain": {},
+    "snow": {},
+    "wind": {
+        "speed": 1.84,
+        "deg": 198
+    },
+    "humidity": 93,
+    "pressure": {
+        "press": 1030,
+        "sea_level": null
+    },
+    "temperature": {
+        "temp": 270.63,
+        "temp_kf": null,
+        "temp_max": 272.04,
+        "temp_min": 269.15,
+        "feels_like": 266.9
+    },
+    "status": "Mist",
+    "detailed_status": "mist",
+    "weather_code": 701,
+    "weather_icon_name": "50n",
+    "visibility_distance": 6437,
+    "dewpoint": null,
+    "humidex": null,
+    "heat_index": null,
+    "utc_offset": -21600,
+    "uvi": null
+}

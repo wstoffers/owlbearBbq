@@ -1,0 +1,34 @@
+{
+    "reference_time": 1613807068,
+    "sunset_time": 1613868115,
+    "sunrise_time": 1613828739,
+    "clouds": 28,
+    "rain": {},
+    "snow": {},
+    "wind": {
+        "speed": 1.88,
+        "deg": 200
+    },
+    "humidity": 61,
+    "pressure": {
+        "press": 1016,
+        "sea_level": null
+    },
+    "temperature": {
+        "temp": 271.35,
+        "temp_kf": null,
+        "temp_max": 273.15,
+        "temp_min": 269.26,
+        "feels_like": 267.11
+    },
+    "status": "Clouds",
+    "detailed_status": "scattered clouds",
+    "weather_code": 802,
+    "weather_icon_name": "03n",
+    "visibility_distance": 10000,
+    "dewpoint": null,
+    "humidex": null,
+    "heat_index": null,
+    "utc_offset": -25200,
+    "uvi": null
+}
