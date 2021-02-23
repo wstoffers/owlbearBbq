@@ -10,13 +10,15 @@ from google.cloud import storage
 
 #define:
 def acquireData(request):
-    """Entry point for HTTP Cloud Function.
+    """Entry point for HTTP Cloud Function
     Args:
-        request (flask.Request): The request object.
+        request (flask.Request): The request object
 
     Returns:
         'Success'
+
     """
+    
     co = datetime.now().astimezone(pytz.timezone("America/Denver"))
     coTime = f'{co:%Y-%m-%d-%H.%M.%S.%f-%a}'
     owm = pyowm.OWM(owmApiKey())
@@ -28,6 +30,13 @@ def acquireData(request):
     return 'Success'
 
 def writeToGcs(weathers, names):
+    """Writes weather data as JSON to raw bucket
+    Args:
+        weathers: Iterable of OpenWeatherMap weather dicts (no relation to Carl)
+        names: Iterable of strings representing JSON file names
+
+    """
+    
     storageClient = storage.Client()
     rawBucket = 'wstoffers-galvanize-owlbear-data-lake-raw'
     bucket = storageClient.get_bucket(rawBucket)
@@ -37,6 +46,15 @@ def writeToGcs(weathers, names):
                                 content_type='application/json')
 
 def owmApiKey():
+    """Retrieves OpenWeatherMap API key from Google Cloud Secrets
+    Args:
+        None
+
+    Returns:
+        payload: API key as a string
+
+    """
+    
     secretClient = secretmanager.SecretManagerServiceClient()
     version = "versions/latest"
     name = f"projects/owlbear-bbq/secrets/openWeatherSecret/{version}"
