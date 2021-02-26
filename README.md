@@ -34,6 +34,28 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
 ### Data Transformation
 
 - Mixed file types
+    - Multiline JSON Weather at Owlbear Example:
+```
+{"reference_time": 1614222001,
+ "sunset_time": 1614213986,
+ "sunrise_time": 1614174005,
+ "clouds": 100,
+ "rain": {},
+ "snow": {"1h": 0.87},
+ "wind": {"speed": 2.68,
+          "deg": 329,
+          "gust": 8.94},
+ "humidity": 89,
+ "pressure": {"press": 1026,
+              "sea_level": null},
+ "temperature": {"temp": 270.21,
+                 "temp_kf": null,
+                 "temp_max": 272.04,
+                 "temp_min": 268.71,
+                 "feels_like": 265.78},
+ ...
+```
+
 - Cleaning
     - Java heap space `OutOfMemoryError`
 - Preparation for analysis
