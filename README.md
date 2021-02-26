@@ -10,30 +10,39 @@ It follows that chefs, trying to maintain as constant a temperature as possible 
 
 With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opened Denver's Owlbear Barbecue on May 9, 2019[[2]](#references). 
 
-#### Figure 1
+#### Figure 1: Flow of Data
 ![Flow of Data](factor0/images/flowOfData.png)
 
 ### Data Ingestion
 
+- Purpose of automated pipeline is 24/7 ingestion availability, matching the cook
+    - Scheduled Cloud Function API calls
+    - Scheduled Spark Cluster Workflow Templating<sup>†</sup>
 - Initial load
 - API calls[[3]](#references) instead of subscribing to publisher
 - Security
 - Stem the tide of streaming data
+    - Cook chamber temperature data streams in near real time<sup>‡</sup>
 
-#### Figure 2
+#### Figure 2: OEM Probe Data Example
 ![Sample Thermocouple Data](factor0/images/thermoworksPlot2021.02.25.21.37.png)
 
-<sup>†</sup>While the cloud thermocouple was installed on 2/24/21 and is gathering temperature data, this portion of the pipeline has been postponed and will be integrated into v0.2.
+<sup>†</sup>Dataproc automation has been postponed and will be integrated into v0.2.
+
+<sup>‡</sup>While the cloud thermocouple was installed on 2/24/21 and is gathering temperature data, this portion of the pipeline has also been postponed and will be integrated into v0.2.
 
 ### Data Transformation
 
 - Mixed file types
 - Cleaning
+    - Java heap space `OutOfMemoryError`
 - Preparation for analysis
 
 #### Compaction
 
 - File read time issues
+    - 72.9x read time factor
+    - One successful read of subset took 14 minutes
 - Computing time v. Engineering time
 
 ### Data Insight
