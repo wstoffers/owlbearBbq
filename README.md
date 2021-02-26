@@ -8,7 +8,7 @@ It follows that chefs, trying to maintain as constant a temperature as possible 
 
 ## Follow the Data
 
-With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opened Denver's Owlbear Barbecue on May 9, 2019[[2]](#references). Since then, his windy corner has been an olfactory temptation for passers-by - rooted in Central Texas techniques, but with a Denver twist. It is this unique combination that makes Owlbear a valuable study. Regionality in smoked brisket is often debated, but the focus is typically wood or ingredient sourcing. This examination, however, is focused on regional weather.
+With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opened Denver's Owlbear Barbecue on May 9, 2019[[2]](#references). Since then, his windy corner has been an olfactory temptation for passers-by - rooted in Central Texas techniques, but with a Denver twist. It is this unique combination that makes Owlbear a valuable study. Regionality in smoked brisket is often debated, with the focus on wood or ingredient sourcing. This examination, however, is focused on regional weather.
 
 #### Figure 1: Flow of Data
 ![Flow of Data](factor0/images/flowOfData.png)
@@ -20,9 +20,10 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
     - Scheduled Spark Cluster Workflow Templating<sup>†</sup>
 - Initial load
 - API calls instead of subscribing to publisher
-- Security
+- Security: Keys secured in GCP Secret Manager, enabling ephemerality
 - Stem the tide of streaming data
     - Cook chamber temperature data streams in near real time<sup>‡</sup>
+    - Gradually step down in rate since real time delivery is costly & not needed
 
 #### Figure 2: OEM Probe Data Example
 ![Sample Thermocouple Data](factor0/images/thermoworksPlot2021.02.25.21.37.png)
@@ -65,7 +66,8 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
 - File read time issues
     - 72.9x read time factor
     - One successful read of subset took 14 minutes
-- Computing time v. Engineering time
+- Parquet    
+    - Computing time v. Engineering time
 
 ### Data Insight
 
