@@ -16,10 +16,10 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
 ### Data Ingestion
 
 - Purpose of automated pipeline is 24/7 ingestion availability, matching the cook
-    - Scheduled Cloud Function API calls
+    - Scheduled Cloud Function API calls to OpenWeatherMap API[[3]](#references) & API in Azure
     - Scheduled Spark Cluster Workflow Templating<sup>†</sup>
 - Initial load
-- API calls[[3]](#references) instead of subscribing to publisher
+- API calls instead of subscribing to publisher
 - Security
 - Stem the tide of streaming data
     - Cook chamber temperature data streams in near real time<sup>‡</sup>
