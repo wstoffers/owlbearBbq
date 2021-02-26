@@ -8,12 +8,15 @@ It follows that chefs, trying to maintain as constant a temperature as possible 
 
 ## Follow the Data
 
-With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opened Denver's Owlbear Barbecue on May 9, 2019 [[2]](#references). 
+With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opened Denver's Owlbear Barbecue on May 9, 2019[[2]](#references). 
 
-### Figure 1
+#### Figure 1
 ![Flow of Data](factor0/images/flowOfData.png)
 
 ### Data Ingestion
+
+#### Figure 2
+![Sample Thermocouple Data](factor0/images/thermoworksPlot2021.02.25.21.37.png)
 
 <sup>†</sup>While the cloud thermocouple was installed on 2/24/21 and is gathering temperature data, this portion of the pipeline has been postponed and will be integrated into v0.2.
 
@@ -22,6 +25,8 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
 #### Compaction
 
 ### Data Insight
+
+- Coming soon to a theater near you!
 
 ## References
 1. [National Restaurant Association Report](https://restaurant.org/downloads/pdfs/advocacy/covid-19-restaurant-impact-survey-v-state-results)
