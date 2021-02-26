@@ -15,6 +15,11 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
 
 ### Data Ingestion
 
+- Initial load
+- API calls[[3]](#references) instead of subscribing to publisher
+- Security
+- Stem the tide of streaming data
+
 #### Figure 2
 ![Sample Thermocouple Data](factor0/images/thermoworksPlot2021.02.25.21.37.png)
 
@@ -22,7 +27,14 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
 
 ### Data Transformation
 
+- Mixed file types
+- Cleaning
+- Preparation for analysis
+
 #### Compaction
+
+- File read time issues
+- Computing time v. Engineering time
 
 ### Data Insight
 
