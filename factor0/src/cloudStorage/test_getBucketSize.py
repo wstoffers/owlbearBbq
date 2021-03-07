@@ -16,6 +16,11 @@ def test_transformOutput_raisesOnErr(rawDataLakeBucket):
     with pytest.raises(RuntimeError):
         rawDataLakeBucket._transformOutput(out, err)
 
+def test_transformOutput_transform(rawDataLakeBucket):
+    err = ''
+    out = b'23081749  anyString'
+    assert rawDataLakeBucket._transformOutput(out, err) == 23081749
+
 
 
 
