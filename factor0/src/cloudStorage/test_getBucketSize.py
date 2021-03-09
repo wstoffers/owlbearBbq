@@ -1,8 +1,11 @@
 #**    This line is 79 characters long.  The 80th character should wrap.   ***\
 
 #imports:
+import re
 import pytest
 from getBucketSize import gcsBucket
+
+import subprocess
 
 #define:
 @pytest.fixture
@@ -21,11 +24,18 @@ def test_transformOutput_transform(rawDataLakeBucket):
     out = b'23081749  anyString'
     assert rawDataLakeBucket._transformOutput(out, err) == 23081749
 
-
-
-
-
-
+def test_getSize_string(rawDataLakeBucket):
+    class pOpen(object):
+        def __init__(self, strings, *args, **kwargs):
+            self.strings = strings
+        def communicate(self):
+            return self.strings
+    
+    setattr(rawDataLakeBucket,'_transformOutput',lambda *args: ' '.join(args))
+    setattr(subprocess,'Popen',pOpen)
+    expected = 'gsutil du -s gs://'
+    m = re.match(expected,rawDataLakeBucket._getSize(rawDataLakeBucket.buckets))
+    assert m
 
 #run:
 if __name__ == '__main__':
