@@ -6,6 +6,7 @@ import pytest
 from getBucketSize import gcsBucket
 
 import subprocess
+import numpy as np
 
 #define:
 @pytest.fixture
@@ -36,6 +37,14 @@ def test_getSize_string(rawDataLakeBucket):
     expected = 'gsutil du -s gs://'
     m = re.match(expected,rawDataLakeBucket._getSize(rawDataLakeBucket.buckets))
     assert m
+
+def test_formString_basic(rawDataLakeBucket):
+    filtered = np.array([26.822252, np.inf])
+    sizes = [26.822252, 0]
+    keys = np.array([2., -np.inf])
+    ending = 'B' #or 'iB'
+    strings = rawDataLakeBucket._formString(filtered,sizes,keys,ending)
+    assert strings == ['26.82 MB', '0 B']
 
 #run:
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ class gcsBucket(object):
             with np.errstate(divide='ignore'):
                 filtered = np.where(inUnits>1,inUnits,np.inf).min(axis=1)
                 keys = np.log(np.array(sizes)/filtered)/np.log(block)
-            arrays.append(self._formString(filtered,sizes,keys, ending))
+            arrays.append(self._formString(filtered,sizes,keys,ending))
         return np.column_stack(arrays)
 
     def _formString(self, reduction, bites, keys, originalEnding):
