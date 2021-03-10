@@ -38,13 +38,21 @@ def test_getSize_string(rawDataLakeBucket):
     m = re.match(expected,rawDataLakeBucket._getSize(rawDataLakeBucket.buckets))
     assert m
 
-def test_formString_basic(rawDataLakeBucket):
+def test_formString_si(rawDataLakeBucket):
     filtered = np.array([26.822252, np.inf])
-    sizes = [26.822252, 0]
+    sizes = [26822252, 0]
     keys = np.array([2., -np.inf])
     ending = 'B' #or 'iB'
     strings = rawDataLakeBucket._formString(filtered,sizes,keys,ending)
     assert strings == ['26.82 MB', '0 B']
+
+def test_formString_iec(rawDataLakeBucket):
+    filtered = np.array([25.57969284, np.inf])
+    sizes = [26822252, 0]
+    keys = np.array([2., -np.inf])
+    ending = 'iB'
+    strings = rawDataLakeBucket._formString(filtered,sizes,keys,ending)
+    assert strings == ['25.58 MiB', '0 B']    
 
 #run:
 if __name__ == '__main__':
