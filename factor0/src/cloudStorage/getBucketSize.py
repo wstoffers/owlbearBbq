@@ -12,7 +12,10 @@ class gcsBucket(object):
     """Wrapper for gsutil, to gather bucket metadata without fetching blobs
 
     This can take a long time if there are hundreds of thousands of blobs, so 
-    for buckets that large, consider using Google's Monitoring GUI. 
+        for buckets that large, consider using Google's Monitoring GUI. Only 
+        considers unit prefixes as large as tera, because if your bucket 
+        should be measured in peta-anything, is it really still a student
+        project?
 
     Args:
         buckets: iterable containing strings representing bucket URLs

@@ -52,7 +52,22 @@ def test_formString_iec(rawDataLakeBucket):
     keys = np.array([2., -np.inf])
     ending = 'iB'
     strings = rawDataLakeBucket._formString(filtered,sizes,keys,ending)
-    assert strings == ['25.58 MiB', '0 B']    
+    assert strings == ['25.58 MiB', '0 B']
+
+def test_withUnitsFormStringIntegration_mega(rawDataLakeBucket):
+    sizes = [29881909, 0]
+    array = rawDataLakeBucket._withUnits(sizes)
+    #np.testing.assert_almost_equal(array,
+    #                               np.array([['29.88 MB', '28.50 MiB'],
+    #                                         ['0 B','0 B']]))
+    #^^^only use this with arrays of floats/doesn't work with strings
+    assert array[0][0] == '29.88 MB'
+    assert array[0][1] == '28.50 MiB'
+    assert array[1][0] == '0 B'
+    assert array[1][1] == '0 B'
+
+def test_withUnitsFormStringIntegration_kilo(rawDataLakeBucket):
+    pass
 
 #run:
 if __name__ == '__main__':
