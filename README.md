@@ -11,7 +11,7 @@ It follows that chefs, trying to maintain as constant a temperature as possible 
 With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opened Denver's Owlbear Barbecue on May 9, 2019[[2]](#references). Since then, his windy corner has been an olfactory temptation for passers-by - rooted in Central Texas techniques, but with a Denver twist. It is this unique combination that makes Owlbear a valuable study. Regionality in smoked brisket is often debated, with the focus on wood or ingredient sourcing. This examination, however, is focused on regional weather.
 
 #### Figure 1: Flow of Data
-![Flow of Data](factor0/images/flowOfData.png)
+![Flow of Data](https://raw.githubusercontent.com/wstoffers/owlbearBbq/main/factor0/images/flowOfData.png)
 
 ### Data Ingestion
 
