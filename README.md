@@ -26,7 +26,7 @@ With Austin's Franklin Barbecue already on his resume, Chef Karl Fallenius opene
     - Gradually step down in rate since real time delivery is costly & not needed
 
 #### Figure 2: OEM Probe Data Example
-![Sample Thermocouple Data](factor0/images/thermoworksPlot2021.02.25.21.37.png)
+![Sample Thermocouple Data](https://raw.githubusercontent.com/wstoffers/owlbearBbq/main/factor0/images/thermoworksPlot2021.02.25.21.37.png)
 
 <sup>†</sup>Dataproc automation has been postponed and will be integrated into v0.2.
 
