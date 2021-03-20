@@ -5,15 +5,15 @@ Portions of plots might not be visible in this README.<br/>
 - [x] GCP Secret Manager setup
 - [x] GCP Cloud Scheduler + GCP Cloud Function calling REST API
 - [x] IOT thermocouple install
-- [ ] GCP Cloud Scheduler + GCP Cloud Function calling SOAP API (early April '21)
-- [ ] IOT weather station install (early April '21)
+- [ ] GCP Cloud Scheduler + GCP Cloud Function calling SOAP API (early May '21)
+- [x] IOT weather station install
 - [x] Population of GCP Cloud Storage data lake
-- [ ] GCP Dataproc PySpark transform to Parquet w/ compaction (early April '21)
-- [ ] GCP Dataflow to Firestore pipeline for anomoly detection and mobile notification (mid April '21)
-- [ ] GCP Cloud SQL loading for idempotence (mid April '21)
-- [ ] Loading of GCP BigQuery data warehouse for ad hoc analysis (mid April '21)
-- [ ] Bayesian inference (late April '21)
-- [ ] Refactor to AWS/Snowflake (late May '21)
+- [ ] GCP Dataproc PySpark transform to Parquet w/ compaction (early May '21)
+- [ ] GCP Dataflow to Firestore pipeline for anomoly detection and mobile notification (mid May '21)
+- [ ] GCP Cloud SQL loading for idempotence (late May '21)
+- [ ] Loading of GCP BigQuery data warehouse for ad hoc analysis (late May '21)
+- [ ] Bayesian inference (early June '21)
+- [ ] Refactor to AWS/Snowflake (early June '21)
 - [ ] Pytest additions (ongoing)
 
 The Texas Crutch is a well-known barbecue technique that pitmasters use to improve resource usage during a long cook. In a time where 86% of restaurants are reporting a drop in profit margins over the last year, resource management is paramount[[1]](#references). But is wrapping a brisket the only way to increase return on investment as a restaurant owner? And is the real Texas Crutch actually the weather?
