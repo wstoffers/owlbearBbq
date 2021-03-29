@@ -1,8 +1,9 @@
 #**    This line is 79 characters long.  The 80th character should wrap.   ***\
 
 #imports:
-import re
+import sys, re
 import pytest
+sys.path.append('/home/data/factor0/src/cloudStorage')
 from getBucketSize import gcsBucket
 
 import subprocess
