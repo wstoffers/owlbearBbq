@@ -1,5 +1,5 @@
 Portions of plots might not be visible in this README.<br/>
-<!--Please see the -->[GitHub Pages site for this project](https://wstoffers.github.io/owlbearBbq/) under construction.
+[GitHub Pages site for this project](https://wstoffers.github.io/owlbearBbq/) under construction.
 
 ### Road Map
 - [x] GCP Secret Manager setup
