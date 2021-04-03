@@ -2,9 +2,10 @@
 title: The Texas Crutch
 ---
 
-## Pose Question
+## Is Capital Investment Needed To Overcome A Disadvantage Due To Local Weather?
+This page is under construction; last updated 4/7/21.
 
-Very short pitch as eventually parallax photo will go above, but most importantly here there is control of the background color so plots can be made easy to see
+<!--Very short pitch as eventually parallax photo will go above, but most importantly here there is control of the background color so plots can be made easy to see-->
 
 ### Road Map
 - [x] GCP Secret Manager setup
