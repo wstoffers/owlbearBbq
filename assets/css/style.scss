@@ -1,4 +1,12 @@
 ---
 ---
 
-@import 'jekyll-theme-dinky';
+@import "{{ site.theme }}";
+body {background-color: #595856;
+      color: #FFFFFF;
+}
+h1, h2, h3, h4, h5, h6 {color: #FFFFFF;}
+p {color: #FFFFFF;}
+a {text-decoration: none;
+   font-weight: bold;
+}
