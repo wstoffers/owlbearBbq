@@ -38,7 +38,7 @@ def writeToGcs(weathers, names):
     """
     
     storageClient = storage.Client()
-    rawBucket = 'wstoffers-galvanize-owlbear-data-lake-raw'
+    rawBucket = 'wstoffers-galvanize-owlbear-bbq-data-lake-raw'
     bucket = storageClient.get_bucket(rawBucket)
     for weather, name in zip(weathers, names):
         blob = bucket.blob(name)
@@ -57,7 +57,7 @@ def owmApiKey():
     
     secretClient = secretmanager.SecretManagerServiceClient()
     version = "versions/latest"
-    name = f"projects/owlbear-bbq/secrets/openWeatherSecret/{version}"
+    name = f"projects/owlbear-barbecue/secrets/openWeatherSecret/{version}"
     response = secretClient.access_secret_version(request={"name": name})
     payload = response.payload.data.decode("UTF-8").strip()
     return payload
