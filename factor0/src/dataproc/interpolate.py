@@ -14,7 +14,7 @@ from pyspark.sql.utils import AnalysisException
 interpolateQuery = '''
     --spark sql doesn't support CREATE FUNCTION without a *.jar yet
     WITH apiWeather AS(
-        SELECT --/*+ BROADCAST(apiWeather) */
+        SELECT
             owlbear.when AS when,
             FORMAT_NUMBER(
                 (owlbear.temperature.temp - 273.15) * 9/5 + 32, 2
@@ -27,7 +27,7 @@ interpolateQuery = '''
         INNER JOIN franklin ON
             owlbear.when = franklin.when
     ), combinedWhen AS(
-        SELECT
+        SELECT --/*+ BROADCAST(apiWeather) */
             CASE WHEN thermaq.when IS NULL
                 THEN apiWeather.when
                 ELSE thermaq.when 
@@ -106,7 +106,7 @@ def interpolate(spark, window):
     owlbearApi.createOrReplaceTempView("owlbear")
     result = spark.sql(interpolateQuery)
     result.explain()
-    result.show(1860,truncate=False)
+    result.show(10,truncate=False)
 
 def readJson(spark, prefix, timebox):
     whenFormat = '%Y.%m.%d.%H.%M.%S'
