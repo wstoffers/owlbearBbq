@@ -56,4 +56,7 @@ Making sure executable permissions are set correctly, executed
 ```bash
 $ ./factor0/src/cloudStorage/createBuckets.sh
 ```
-This can only be executed once, as all GCS buckets reside in the same namespace. Even for a different projct, the bucket names must be changed.
+This can only be executed once, as all GCS buckets reside in the same namespace. Even for a different projct, the bucket names must be changed. If executable permissions are set correctly, bucket size can be determined by executing
+```bash
+$ ./factor0/src/cloudStorage/getBucketSize.py
+```
