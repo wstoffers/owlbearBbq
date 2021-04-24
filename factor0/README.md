@@ -3,7 +3,7 @@
 ### Google Cloud Configuration
 
 Environment configuration began with
-```
+```bash
 $ gcloud config configurations create owlbear
 $ gcloud init --console-only
 ```
@@ -22,7 +22,7 @@ to finalize the configuration `owlbear` and the project `owlbear-barbecue`. Open
 ### Enabling Services
 
 Enabled several services with
-```
+```bash
 $ gcloud services enable dataproc.googleapis.com
 $ gcloud services enable appengine.googleapis.com
 $ gcloud services enable cloudscheduler.googleapis.com
@@ -37,7 +37,7 @@ $ gcloud services enable serviceusage.googleapis.com
 ### Identity Access Management/Secrets Manager
 
 Ideally, identity access should be managed carefully. Initial IAM configuration for this project was quick and dirty: simply added one service account to use for GCP Secrets Manager with
-```
+```bash
 $ gcloud iam service-accounts create owlbear
 $ gcloud projects add-iam-policy-binding owlbear-barbecue --member="serviceAccount:owlbear@owlbear-barbecue.iam.gserviceaccount.com" --role="roles/owner"
 $ gcloud iam service-accounts keys create owlbearKeyFile.json --iam-account=owlbear@owlbear-barbecue.iam.gserviceaccount.com
@@ -49,3 +49,11 @@ $ gcloud secrets add-iam-policy-binding openWeatherSecret --role roles/secretman
 ```
 
 Also see [more generic Secret Manager configuration example](src/secrets/).
+
+### Google Cloud Storage
+
+Making sure executable permissions are set correctly, executed
+```bash
+$ ./factor0/src/cloudStorage/createBuckets.sh
+```
+This can only be executed once, as all GCS buckets reside in the same namespace. Even for a different projct, the bucket names must be changed.
