@@ -84,6 +84,7 @@ class gcsBucket(object):
 
 #run:
 if __name__ == '__main__':
-    maid = gcsBucket(['gs://wstoffers-galvanize-owlbear-data-lake-raw',
-                      'gs://wstoffers-galvanize-owlbear-data-lake-transformed'])
+    prefix = 'gs://wstoffers-galvanize-owlbear-bbq-data-lake'
+    maid = gcsBucket([f'{prefix}-raw',
+                      f'{prefix}-transformed'])
     print(maid.tidySize())
