@@ -42,25 +42,55 @@ interpolateQuery = '''
             thermaq.when = apiWeather.when
         ORDER BY
             when
+    ), calcPrep AS(
+        SELECT
+            when,
+            smokerTempDegF AS smokerTemp,
+            UNIX_TIMESTAMP(when) AS x,
+            UNIX_TIMESTAMP(
+                LAST(apiWhen, true) OVER(
+                    lookback
+                )
+            ) AS x0,
+            UNIX_TIMESTAMP(
+                FIRST(apiWhen, true) OVER(
+                    lookahead
+                )
+            ) AS x1,
+            LAST(owlbearTempDegF, true) OVER(
+                lookback
+            ) AS owlbearY0,
+            FIRST(owlbearTempDegF, true) OVER(
+                lookahead
+            ) AS owlbearY1,
+            LAST(franklinTempDegF, true) OVER(
+                lookback
+            ) AS franklinY0,
+            FIRST(franklinTempDegF, true) OVER(
+                lookahead
+            ) AS franklinY1
+        FROM
+            combinedWhen
+        WINDOW
+            lookback AS (ORDER BY when 
+                RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+            ), lookahead AS (ORDER BY when
+                RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+            )
     )
     SELECT
         when,
-        apiWhen,
-        smokerTempDegF,
-        LAST(owlbearTempDegF, true) OVER(
-            lookback
-        ) AS owlbearTempDegF,
-        FIRST(franklinTempDegF, true) OVER(
-            lookahead
-        ) AS franklinTempDegF
+        smokerTemp,
+        ROUND(
+            owlbearY0 + (x-x0) * ((owlbearY1-owlbearY0)/(x1-x0)), 2
+        ) AS owlbearAPI,
+        ROUND(
+            franklinY0 + (x-x0) * ((franklinY1-franklinY0)/(x1-x0)), 2
+        ) AS franklinAPI
     FROM
-        combinedWhen
-    WINDOW
-        lookback AS (ORDER BY when 
-            RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-        ), lookahead AS (ORDER BY when
-            RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
-        );
+        calcPrep
+    WHERE
+        smokerTempDegF IS NOT NULL;
 '''
 
 confirmQuery = '''
