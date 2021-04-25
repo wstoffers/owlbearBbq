@@ -90,22 +90,7 @@ interpolateQuery = '''
     FROM
         calcPrep
     WHERE
-        smokerTempDegF IS NOT NULL;
-'''
-
-confirmQuery = '''
-    SELECT 
-        owlbear.when AS when,
-        FORMAT_NUMBER(
-            (owlbear.temperature.temp - 273.15) * 9/5 + 32, 2
-        ) AS owlbearTempDegF,
-        FORMAT_NUMBER(
-            (franklin.temperature.temp - 273.15) * 9/5 + 32, 2
-        ) AS franklinTempDegF
-    FROM
-        owlbear
-    INNER JOIN franklin ON
-        owlbear.when = franklin.when
+        smokerTemp IS NOT NULL;
 '''
 
 def interpolate(spark, window):
@@ -122,9 +107,6 @@ def interpolate(spark, window):
     result = spark.sql(interpolateQuery)
     result.explain()
     result.show(1860,truncate=False)
-    result = spark.sql(confirmQuery)
-    result.explain()
-    result.show(10,truncate=False)
 
 def readJson(spark, prefix, timebox):
     whenFormat = '%Y.%m.%d.%H.%M.%S'
