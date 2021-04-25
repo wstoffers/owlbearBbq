@@ -13,7 +13,6 @@ from pyspark.sql.utils import AnalysisException
 #define:
 interpolateQuery = '''
     --spark sql doesn't support CREATE FUNCTION without a *.jar yet
-    --for maintainability, this all-sql syntax was refactored with scala udfs
     WITH apiWeather AS(
         SELECT --/*+ BROADCAST(apiWeather) */
             owlbear.when AS when,
@@ -33,6 +32,7 @@ interpolateQuery = '''
                 THEN apiWeather.when
                 ELSE thermaq.when 
                 END AS when,
+            apiWeather.when AS apiWhen,
             thermaq.smokerTempDegF,
             apiWeather.owlbearTempDegF,
             apiWeather.franklinTempDegF
@@ -45,15 +45,22 @@ interpolateQuery = '''
     )
     SELECT
         when,
+        apiWhen,
         smokerTempDegF,
         LAST(owlbearTempDegF, true) OVER(
             lookback
         ) AS owlbearTempDegF,
-        franklinTempDegF
+        FIRST(franklinTempDegF, true) OVER(
+            lookahead
+        ) AS franklinTempDegF
     FROM
         combinedWhen
     WINDOW
-        lookback AS (ORDER BY when ASC);
+        lookback AS (ORDER BY when 
+            RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ), lookahead AS (ORDER BY when
+            RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+        );
 '''
 
 confirmQuery = '''
