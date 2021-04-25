@@ -60,3 +60,18 @@ This can only be executed once, as all GCS buckets reside in the same namespace.
 ```bash
 $ ./factor0/src/cloudStorage/getBucketSize.py
 ```
+
+### Google Cloud Functions
+
+Making sure executable permissions are set correctly, executed
+```bash
+$ cd factor0/src/cloudFunctions/acquireData/
+$ ./deploy.sh
+```
+
+### Google Cloud Scheduler
+
+Making sure executable permissions are set correctly, executed
+```bash
+$ ./factor0/src/cloudScheduler/schedule.sh
+```
