@@ -32,16 +32,20 @@ interpolateQuery = '''
         CASE WHEN thermaq.when IS NULL
             THEN apiWeather.when
             ELSE thermaq.when 
-            END AS when,
+            END AS test,
         thermaq.smokerTempDegF,
-        apiWeather.owlbearTempDegF,
+        LAST(apiWeather.owlbearTempDegF,true) OVER(
+            lookback
+        ) AS owlbearTempDegF,
         apiWeather.franklinTempDegF
     FROM
         thermaq
     FULL OUTER JOIN apiWeather ON
         thermaq.when = apiWeather.when
+    WINDOW
+        lookback AS (ORDER BY test ASC)
     ORDER BY
-        when;
+        test;
 '''
 
 confirmQuery = '''
