@@ -28,22 +28,20 @@ interpolateQuery = '''
         INNER JOIN franklin ON
             owlbear.when = franklin.when
     )
-    SELECT 
-        thermaq.when,
+    SELECT
+        CASE WHEN thermaq.when IS NULL
+            THEN apiWeather.when
+            ELSE thermaq.when 
+            END AS when,
         thermaq.smokerTempDegF,
-        LAST(apiWeather.owlbearTempDegF, true) OVER(
-            lookback
-        ) AS owlbearTempDegF,
+        apiWeather.owlbearTempDegF,
         apiWeather.franklinTempDegF
     FROM
         thermaq
     FULL OUTER JOIN apiWeather ON
         thermaq.when = apiWeather.when
-    WINDOW
-        lookback AS (ORDER BY apiWeather.when ASC),
-        lookahead AS (ORDER BY apiWeather.when DESC)
     ORDER BY
-        thermaq.when;
+        when;
 '''
 
 confirmQuery = '''
