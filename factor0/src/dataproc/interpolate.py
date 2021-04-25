@@ -15,7 +15,7 @@ interpolateQuery = '''
     --spark sql doesn't support CREATE FUNCTION without a *.jar yet
     --for maintainability, this all-sql syntax was refactored with scala udfs
     WITH apiWeather AS(
-        SELECT 
+        SELECT --/*+ BROADCAST(apiWeather) */
             owlbear.when AS when,
             FORMAT_NUMBER(
                 (owlbear.temperature.temp - 273.15) * 9/5 + 32, 2
@@ -28,15 +28,37 @@ interpolateQuery = '''
         INNER JOIN franklin ON
             owlbear.when = franklin.when
     )
-    SELECT /*+ BROADCAST(apiWeather) */
+    SELECT 
         thermaq.when,
         thermaq.smokerTempDegF,
-        apiWeather.owlbearTempDegF,
+        LAST(apiWeather.owlbearTempDegF, true) OVER(
+            lookback
+        ) AS owlbearTempDegF,
         apiWeather.franklinTempDegF
     FROM
         thermaq
-    LEFT JOIN apiWeather ON
-        thermaq.when = apiWeather.when;
+    FULL OUTER JOIN apiWeather ON
+        thermaq.when = apiWeather.when
+    WINDOW
+        lookback AS (ORDER BY apiWeather.when ASC),
+        lookahead AS (ORDER BY apiWeather.when DESC)
+    ORDER BY
+        thermaq.when;
+'''
+
+confirmQuery = '''
+    SELECT 
+        owlbear.when AS when,
+        FORMAT_NUMBER(
+            (owlbear.temperature.temp - 273.15) * 9/5 + 32, 2
+        ) AS owlbearTempDegF,
+        FORMAT_NUMBER(
+            (franklin.temperature.temp - 273.15) * 9/5 + 32, 2
+        ) AS franklinTempDegF
+    FROM
+        owlbear
+    INNER JOIN franklin ON
+        owlbear.when = franklin.when
 '''
 
 def interpolate(spark, window):
@@ -51,6 +73,9 @@ def interpolate(spark, window):
     franklinApi.createOrReplaceTempView("franklin")
     owlbearApi.createOrReplaceTempView("owlbear")
     result = spark.sql(interpolateQuery)
+    result.explain()
+    result.show(1860,truncate=False)
+    result = spark.sql(confirmQuery)
     result.explain()
     result.show(10,truncate=False)
 
