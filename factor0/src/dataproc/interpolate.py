@@ -9,20 +9,19 @@ from pyspark.sql.utils import AnalysisException
 
 #define:
 def interpolate(spark, window):
-    print(f'herehere current directory: {os.getcwd()}')
     for resource in os.listdir(os.getcwd()):
         if window in resource:
             break
-    thermaq = readBroken(resource)
-    print(f'herehere read:')
+    thermaq = readThermaq(resource)
     thermaq.printSchema()
     thermaq.show(20, False)
     
-def readBroken(filename):
+def readThermaq(filename):
     schema = StructType([StructField('when',TimestampType()),
                          StructField(f'smokerTemp (degF)',DecimalType(5,2)),
                          StructField(f'unused',DecimalType(5,2))])
-    return spark.read.csv(filename,header=True,schema=schema)
+    thermaq = spark.read.csv(filename,header=True,schema=schema)
+    return thermaq.drop('unused')
 
 #run:
 if __name__ == '__main__':
