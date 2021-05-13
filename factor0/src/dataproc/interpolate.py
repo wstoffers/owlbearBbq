@@ -4,7 +4,7 @@
 import os, sys, re, json
 import pyspark
 from pyspark.sql.types import StructType, StructField
-from pyspark.sql.types import DoubleType, TimestampType
+from pyspark.sql.types import DecimalType, TimestampType
 from pyspark.sql.utils import AnalysisException
 
 #define:
@@ -20,8 +20,8 @@ def interpolate(spark, window):
     
 def readBroken(filename):
     schema = StructType([StructField('when',TimestampType()),
-                         StructField(f'smokerTemp (degF)',DoubleType()),
-                         StructField(f'unused',DoubleType())])
+                         StructField(f'smokerTemp (degF)',DecimalType(5,2)),
+                         StructField(f'unused',DecimalType(5,2))])
     return spark.read.csv(filename,header=True,schema=schema)
 
 #run:
@@ -44,4 +44,3 @@ if __name__ == '__main__':
     sc = spark.sparkContext
     interpolate(spark, args.range)
     sc.stop()
-    print(f'{os.linesep}done!{os.linesep*5}')
