@@ -24,6 +24,7 @@ RUN set -ex && \
     conda config --set channel_priority false && \
     conda update conda -y --force-reinstall && \
     conda clean -tipy && \
+    conda install pip && \
     echo "PATH=/opt/miniconda3/bin:\${PATH}" > /etc/profile.d/miniconda.sh && \
     pip install --no-cache pyspark[$SPARK_EXTRAS]==${SPARK_VERSION} && \
     SPARK_HOME=$(python /opt/miniconda3/bin/find_spark_home.py) && \
