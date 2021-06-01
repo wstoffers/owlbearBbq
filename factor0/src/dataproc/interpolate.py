@@ -12,9 +12,10 @@ from pyspark.sql.utils import AnalysisException
 
 #define:
 interpolateQuery = '''
-    --spark sql doesn't support CREATE FUNCTION without a *.jar yet
+    --Spark SQL doesn't support CREATE FUNCTION without a *.jar yet
     WITH apiWeather AS(
-        SELECT
+        --Convert from Kelvin to Fahrenheit:
+        SELECT 
             owlbear.when AS when,
             FORMAT_NUMBER(
                 (owlbear.temperature.temp - 273.15) * 9/5 + 32, 2
@@ -27,13 +28,15 @@ interpolateQuery = '''
         INNER JOIN franklin ON
             owlbear.when = franklin.when
     ), combinedWhen AS(
+        --Partition thermaq, the larger/dense table
+        --Broadcast apiWeather, the smaller/sparse table
         SELECT --/*+ BROADCAST(apiWeather) */
             CASE WHEN thermaq.when IS NULL
-                THEN apiWeather.when
-                ELSE thermaq.when 
+                THEN apiWeather.when 
+                ELSE thermaq.when    
                 END AS when,
-            apiWeather.when AS apiWhen,
-            thermaq.smokerTempDegF,
+            apiWeather.when AS apiWhen, 
+            thermaq.smokerTempDegF,     
             apiWeather.owlbearTempDegF,
             apiWeather.franklinTempDegF
         FROM
@@ -43,30 +46,31 @@ interpolateQuery = '''
         ORDER BY
             when
     ), calcPrep AS(
+        --Prepare for interpolation between last and next non null values:
         SELECT
             when,
             smokerTempDegF AS smokerTemp,
             UNIX_TIMESTAMP(when) AS x,
             UNIX_TIMESTAMP(
-                LAST(apiWhen, true) OVER(
+                LAST(apiWhen, TRUE) OVER(
                     lookback
                 )
             ) AS x0,
             UNIX_TIMESTAMP(
-                FIRST(apiWhen, true) OVER(
+                FIRST(apiWhen, TRUE) OVER(
                     lookahead
                 )
             ) AS x1,
-            LAST(owlbearTempDegF, true) OVER(
+            LAST(owlbearTempDegF, TRUE) OVER(
                 lookback
             ) AS owlbearY0,
-            FIRST(owlbearTempDegF, true) OVER(
+            FIRST(owlbearTempDegF, TRUE) OVER(
                 lookahead
             ) AS owlbearY1,
-            LAST(franklinTempDegF, true) OVER(
+            LAST(franklinTempDegF, TRUE) OVER(
                 lookback
             ) AS franklinY0,
-            FIRST(franklinTempDegF, true) OVER(
+            FIRST(franklinTempDegF, TRUE) OVER(
                 lookahead
             ) AS franklinY1
         FROM
@@ -78,6 +82,7 @@ interpolateQuery = '''
                 RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
             )
     )
+    --Perform interpolation for sparse data:
     SELECT
         when,
         smokerTemp,
@@ -94,6 +99,13 @@ interpolateQuery = '''
 '''
 
 def interpolate(spark, window):
+    '''Read data into DataFrames, prepare/execute SQL query
+
+    Args:
+        spark: Spark Session object
+        window: String holding date/time range of thermocouple data to read
+
+    '''
     thermaq = readThermaq(spark, window)
     thermaq.printSchema()
     thermaq.show(10, False)
@@ -109,6 +121,17 @@ def interpolate(spark, window):
     result.show(10,truncate=False)
 
 def readJson(spark, prefix, timebox):
+    '''Find and read multiline JSON files that fit within date/time range
+
+    Args:
+        spark: Spark Session object
+        prefix: String restaurant name 'owlbear' or 'franklin'
+        timebox: String holding date/time range of thermocouple data
+
+    Returns:
+        DataFrame of API weather data from JSON files matching date/time range
+
+    '''
     whenFormat = '%Y.%m.%d.%H.%M.%S'
     start, end = (datetime.strptime(dt,
                                     whenFormat) for dt in timebox.split('-'))
@@ -147,6 +170,16 @@ def jsonSchema():
             )
 
 def readThermaq(spark, window):
+    '''Read thermocouple CSV that matches date/time range
+
+    Args:
+        spark: Spark Session object
+        timebox: String holding date/time range of thermocouple data to read
+
+    Returns:
+        DataFrame of thermocouple temperature data
+
+    '''
     for resource in os.listdir(os.getcwd()):
         if window in resource:
             break    
