@@ -69,25 +69,25 @@ interpolateQuery = '''
             smokerTempDegF AS smokerTemp,
             UNIX_TIMESTAMP(when) AS x,
             UNIX_TIMESTAMP(
-                LAST(apiWhen, TRUE) OVER(
+                LAST_VALUE(apiWhen, TRUE) OVER(
                     lookback
                 )
             ) AS x0,
             UNIX_TIMESTAMP(
-                FIRST(apiWhen, TRUE) OVER(
+                FIRST_VALUE(apiWhen, TRUE) OVER(
                     lookahead
                 )
             ) AS x1,
-            LAST(owlbearTempDegF, TRUE) OVER(
+            LAST_VALUE(owlbearTempDegF, TRUE) OVER(
                 lookback
             ) AS owlbearY0,
-            FIRST(owlbearTempDegF, TRUE) OVER(
+            FIRST_VALUE(owlbearTempDegF, TRUE) OVER(
                 lookahead
             ) AS owlbearY1,
-            LAST(franklinTempDegF, TRUE) OVER(
+            LAST_VALUE(franklinTempDegF, TRUE) OVER(
                 lookback
             ) AS franklinY0,
-            FIRST(franklinTempDegF, TRUE) OVER(
+            FIRST_VALUE(franklinTempDegF, TRUE) OVER(
                 lookahead
             ) AS franklinY1
         FROM
