@@ -11,6 +11,23 @@ from pyspark.sql.functions import lit, to_timestamp
 from pyspark.sql.utils import AnalysisException
 
 #define:
+combineQuery = '''
+    --combine/deduplicate as stopgap for thermocouple splitting/duplicates issue
+    (SELECT
+         when,
+         smokerTempDegF,
+         unused
+     FROM
+         start)
+    UNION
+    (SELECT
+         when,
+         smokerTempDegF,
+         unused
+     FROM
+         end);
+'''
+
 interpolateQuery = '''
     --Spark SQL doesn't support CREATE FUNCTION without a *.jar yet
     WITH apiWeather AS(
@@ -170,7 +187,11 @@ def jsonSchema():
             )
 
 def readThermaq(spark, window):
-    '''Read thermocouple CSV that matches date/time range
+    '''Read thermocouple CSV(s) that match(es) date/time range
+
+    Intended to read a single CSV that holds date/time range but expanded to 
+        allow for two separate CSVs to cover date/time range as a workaround
+        for thermocouple splitting/duplicates issue
 
     Args:
         spark: Spark Session object
@@ -180,13 +201,23 @@ def readThermaq(spark, window):
         DataFrame of thermocouple temperature data
 
     '''
+    start, end = window.split('-')
     for resource in os.listdir(os.getcwd()):
-        if window in resource:
-            break    
+        if start in resource:
+            startCsv = resource
+        if end in resource:
+            endCsv = resource
     schema = StructType([StructField('when',TimestampType()),
                          StructField(f'smokerTempDegF',DecimalType(5,2)),
                          StructField(f'unused',DecimalType(5,2))])
-    thermaq = spark.read.csv(resource,header=True,schema=schema)
+    if startCsv == endCsv:
+        thermaq = spark.read.csv(startCsv,header=True,schema=schema)
+    else:
+        start = spark.read.csv(startCsv,header=True,schema=schema)
+        start.createOrReplaceTempView('start')
+        end = spark.read.csv(endCsv,header=True,schema=schema)
+        end.createOrReplaceTempView('end')
+        thermaq = spark.sql(combineQuery)
     return thermaq.drop('unused')
 
 #run:
