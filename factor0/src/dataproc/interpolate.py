@@ -12,7 +12,7 @@ from pyspark.sql.utils import AnalysisException
 
 #define:
 combineQuery = '''
-    --combine/deduplicate as stopgap for thermocouple splitting/duplicates issue
+    --Combine/deduplicate as stopgap for thermocouple splitting/duplicates issue
     (SELECT
          when,
          smokerTempDegF,
